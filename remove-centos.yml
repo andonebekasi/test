@@ -1,7 +1,4 @@
 - hosts: domain
   tasks:
-   - name: Remove "nginx" package
-     yum:
-     name: nginx
-     state: absent
-
+  - name: Remove nginx
+    action: yum pkg=nginx state=absent

@@ -1,6 +1,4 @@
 - hosts: domain
   tasks:
-   - name: Remove "nginx" package
-     apt:
-     name: nginx
-     state: absent
+  - name: Remove nginx
+    action: apt pkg=nginx state=absent
