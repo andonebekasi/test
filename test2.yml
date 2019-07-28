@@ -4,11 +4,11 @@
        timezone:
          name: Asia/Jakarta
 
-     - name: Set allow firewall
-       firewalld:
-         port: "{{ port }}"
-         state: enabled
-         permanent: true
+ #    - name: Set allow firewall
+ #      firewalld:
+ #        port: "{{ port }}"
+ #        state: enabled
+ #        permanent: true
 
      - name: Create directory
        file:
