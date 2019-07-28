@@ -1,0 +1,18 @@
+- name: Install Nginx
+  apt:
+   name: nginx
+   state: present
+
+- name: Start the nginx
+  service:
+    name: nginx
+    state: started
+
+- name: Upload index.html to remote machine
+  copy:
+    src: roles/nginx/files/index.html
+    dest: /var/www/html/
+    mode: 0644
+    owner: root
+  notify:
+    - restart_nginx

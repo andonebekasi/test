@@ -1,0 +1,17 @@
+---
+
+- name: install php dan phpmyadmin
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - php
+    - phpmyadmin
+    - php-mbstring
+    - php-pear
+- name: set up apache phpmyadmin.conf
+  template: 
+    src: roles/apache/templates/phpMyAdmin.conf.tpl
+    dest: /etc/httpd/conf.d/phpMyAdmin.conf
+  notify:
+    - restart apache

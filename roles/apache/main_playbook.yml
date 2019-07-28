@@ -1,0 +1,59 @@
+---
+- hosts: domain
+  vars: 
+     doc_root: /var/www/html/{{ ansible_hostname }}_web
+     vhost_dir: /etc/httpd/conf.d
+     root_db_password: idnmantab123
+
+  tasks:
+     - name: Install apache web server
+       yum: 
+        name: httpd
+        state: latest
+       notify: 
+           - start apache
+     
+     - name: create custom document root 
+       file: 
+         path: "{{ doc_root }}"
+         state: directory
+         owner: apache
+         group: apache
+
+     - name: set up index.html file
+       copy:
+         src:  /etc/ansible/roles/apache/files/index.html
+         dest: "{{ doc_root }}/index.html"
+         owner: apache
+         group: apache
+
+     - name: set up apache virtual host
+       template:
+         src: /etc/ansible/roles/apache/templates/vhost.tpl
+         dest: "{{ vhost_dir }}/000-default.conf"
+       notify:
+           - restart apache
+    
+     - import_tasks: mysql_playbook.yml
+     - import_tasks: phpmyadmin_playbook.yml
+    
+#     - name: databases
+#       mysql:
+#        root_db_password: REDACTED
+#        hosts:
+#          - "{{ ansible_hostname }}"
+#          - 127.0.0.1
+#          - ::1
+#          - localhost  
+
+  handlers:
+     - name: start apache
+       systemd:
+         name: httpd
+         state: started
+         enabled: true
+
+     - name: restart apache
+       systemd:
+         name: httpd
+         state: restarted 
