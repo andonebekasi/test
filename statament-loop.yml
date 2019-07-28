@@ -1,0 +1,10 @@
+---
+- hosts: domain
+  tasks:
+  - name: Ansible Jinja2 for Loop statement
+    debug:
+      msg: >
+           --== Ansible Jinja2 for statement ==--
+           {% for daftarip in ansible_all_ipv4_addresses -%}
+           Daftar IP Address {{ loop.index }} = {{ daftarip }}
+           {% endfor %}

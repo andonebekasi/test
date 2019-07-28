@@ -1,0 +1,45 @@
+- hosts: domain
+  tasks:
+    - name:  ansible create directory
+      file:
+       path: /mnt/tes
+       state: directory
+
+    - name: Ansible create file
+      file:
+       path: /mnt/tes/idnmantab.txt
+       state: touch
+
+    - name: Add deployment user
+      action: user name=joko  password=mypassword
+
+    - name: Add deployment user
+      action: user name=tono  password=mypassword
+
+    - name:  change file ownership
+      file:
+       path: /mnt/tes/idnmantab.txt
+       owner: joko
+       group: joko
+       mode: 0777
+
+    - name: Remove File idn.txt
+      file:
+       path: /tmp/idn.txt
+       state: absent
+
+    - name: Install Postfix CentOS
+      yum:
+       name: postfix
+       state: present
+
+    - name: Install Postfix APT
+      apt:
+       name: postfix
+       state: present
+
+    - name: Service start postfix
+      service:
+        name: postfix
+        state: started
+

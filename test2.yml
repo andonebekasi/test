@@ -1,0 +1,39 @@
+- hosts: domain
+  tasks:
+     - name: Set time to Asia/JKT
+       timezone:
+         name: Asia/Jakarta
+
+     - name: Set allow firewall
+       firewalld:
+         port: "{{ port }}"
+         state: enabled
+         permanent: true
+
+     - name: Create directory
+       file:
+         path: "{{ home }}"
+         state: directory
+
+     - name: Create user
+       user:
+         name: "{{ item }}"
+         loop:
+         - toni
+         - anggi
+         - intan
+
+     - name: Delete users
+       user: 
+         name: "{{ item }}"
+         state: absent
+         loop:
+         - joko
+         - tono
+
+     - name: Change intan home directory
+       user:
+         name: intan
+         move_home: yes
+         home: "{{ home }}"
+

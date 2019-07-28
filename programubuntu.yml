@@ -1,0 +1,5 @@
+web: apache2
+mail: postfix
+ntp: ntp
+
+

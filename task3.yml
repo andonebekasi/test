@@ -1,0 +1,97 @@
+- hosts: domain
+  tasks:
+    - name: Include variable for CentOS
+      include_vars:
+        file: programcentos.yml
+        name: centos
+      when: 
+        - ansible_distribution == "CentOS"
+    - name: Include variable for Ubuntu
+      include_vars:
+        file: programubuntu.yml
+        name: ubuntu
+      when: 
+        - ansible_distribution == "Ubuntu"
+    - name: Remove program for CentOS
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - centos.web
+        - centos.mail
+        - centos.ntp
+      when:
+        - ansible_distribution == "CentOS"
+    - name: Install program for Ubuntu
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apache2
+        - postfix
+        - ntp
+      when:
+        - ansible_distribution == "Ubuntu"
+    - name: Install  nginx
+      yum:
+        name: nginx
+        state: present
+      when:
+        - ansible_distribution == "CentOS"
+    - name: Remove user in ubuntu
+      user: 
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - toni
+        - anggi
+        - intan
+      when: 
+        - ansible_distribution == "Ubuntu"
+    - name: Add index.html in ubuntu
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      when: 
+        - ansible_distribution == "Ubuntu"
+      notify:
+        - restart_apache2
+    - name: firewalld add port 
+      firewalld:
+        port: "{{ item }}"
+        state: enabled
+        permanent: true
+      loop:
+        - '80/tcp'
+        - '443/tcp'
+      when: 
+        - ansible_distribution == "CentOS"
+    - name: Check directory 
+      stat:
+        path: /tmp/jhon
+      register: result
+
+    - name: Show messages if exist
+      debug:
+        msg: "Directory is Exist"
+      when: result.stat.exists == true 
+    
+    - name: Create if not exist
+      file:
+        path: /tmp/jhon
+        state: directory
+      when: 
+        - result.stat.exists == false
+    
+  handlers:
+    - name: restart_apache2
+      service:
+        name: httpd
+        state: restarted
+ 
+      
+
+
+    
+
+

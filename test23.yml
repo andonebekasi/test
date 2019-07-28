@@ -1,0 +1,5 @@
+- hosts: domain
+  tasks:
+   - name: show hostname
+     debug:
+      msg: "Hostname" = {{ ansible_hostname }}

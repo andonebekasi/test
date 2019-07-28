@@ -1,0 +1,5 @@
+- hosts: domain
+  tasks:
+   - name: show me the IPs and hostname
+     debug:
+      msg:> Default IPv4 server {{ ansible_hostname }} adalah {{ ansible_default_ipv4.address }}

@@ -1,0 +1,38 @@
+- hosts: domain
+  tasks:
+     - name: Grab variable
+       include_vars:
+         file: inc_vars.yml
+         name: ambil
+     - name: Set time to Asia/JKT
+       timezone:
+         name: Asia/Jakarta
+     - name: Set allow firewall
+       firewalld:
+         port: "{{ ambil.port }}"
+         state: enabled
+         permanent: true
+     - name: Create directory
+       file:
+         path: "{{ ambil.home }}"
+         state: directory
+     - name: Create user
+       user:
+        name: "{{ item }}"
+        loop_items:
+         - toni
+         - anggi
+         - intan
+     - name: Delete users
+       user: 
+        name: "{{ item }}"
+        state: absent
+        loop_items:
+         - joko
+         - tono
+     - name: Change intan home directory
+       user:
+         name: intan
+         move_home: yes
+         home: "{{ ambil.home }}"
+

@@ -1,0 +1,14 @@
+- hosts: node1
+  become: true
+  become_user: root
+  tasks:
+    - name: Copy File
+      copy:
+       src: index.html
+       dest: /var/www/html
+       mode: 0644
+       owner: root
+    - name: Restart Apache2
+      service:
+       name: apache2
+       state: restarted

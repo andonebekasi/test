@@ -1,0 +1,15 @@
+---
+- hosts: domain
+  tasks:
+  - name: Ansible Jinja2 if elif else statement
+    debug:
+      msg: >
+           --== Ansible Jinja2 if elif else statement ==--
+           {% if ansible_hostname == "node1" -%}
+           Ini adalah node1
+           {% elif ansible_hostname == "node2" -%}
+           Ini adalah node2
+           {% else -%}
+           Ini bukan host1 dan host2 melainkan {{ ansible_hostname }}
+           {% endif %}
+

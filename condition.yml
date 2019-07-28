@@ -1,0 +1,25 @@
+- hosts: domain
+  vars:
+    - file: /mnt/joko.txt
+  tasks:
+    - name: Install programs
+      yum:
+       name: "{{ item }}"
+       state: present
+      loop:
+       - httpd
+       - php
+       - postfix
+       - ntp
+      when:
+       - ansible_distribution == "CentOS"
+       - ansible_distribution_major_version  == "7"
+    - name: create file
+      file:
+       path: "{{ file }}"
+       state: touch
+       mode: 0777 
+      when:
+       - ansible_hostname == "node1"    
+
+     

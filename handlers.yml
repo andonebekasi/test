@@ -1,0 +1,14 @@
+- hosts: node1
+  tasks:
+    - name: Copy index.html
+      copy:
+       src: index.html
+       dest: /var/www/html/index.html
+       mode: 0644
+      notify:
+       - restart_webserver
+  handlers:
+    - name: restart_webserver
+      service:
+       name: httpd
+       state: restarted 

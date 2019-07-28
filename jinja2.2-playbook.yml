@@ -1,0 +1,12 @@
+---
+- hosts: domain
+  tasks:
+  - name: Ansible Jinja2 filters
+    debug:
+      msg: >
+           --== Ansible Jinja2 filters ==--
+           --== nilai minimum dari [1, 2, 3, 4, 5] ==--
+           {{ [1, 2, 3, 4, 5] | min }}
+           --== nilai maksimum darii [1, 2, 3, 4, 5] ==--
+           {{ [1, 2, 3, 4, 5] | max }}
+
